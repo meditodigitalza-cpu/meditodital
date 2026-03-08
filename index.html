@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medito — Shopify Agency Since 2015</title>
+  <meta name="description" content="We build high-performing Shopify stores. Bespoke theme design, development, optimization, and custom app integrations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --off-white: #f5f3ee;
+      --accent: #c8f03d;
+      --muted: #888888;
+      --border: #e2e0db;
+      --dark-border: #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--off-white); color: var(--black); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ═══════════════════════════════════════
+       NAVIGATION — matches screenshot exactly
+    ═══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--dark-border);
+      padding: 0 3%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+
+    /* Logo: square icon + brand name */
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.55rem;
+      font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700;
+      color: var(--white);
+    }
+
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--white);
+      border-radius: 8px;
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+      gap: 3px; padding: 7px;
+    }
+
+    .nav-logo-icon span {
+      background: var(--black);
+      border-radius: 2px;
+    }
+
+    /* Pill nav container */
+    .nav-pill {
+      display: flex; align-items: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 100px;
+      padding: 5px 6px;
+      gap: 2px;
+    }
+
+    .nav-pill a {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.875rem; font-weight: 500;
+      padding: 0.42rem 1.1rem;
+      border-radius: 100px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-pill a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+
+    .nav-pill a.active {
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.38rem 1.1rem;
+    }
+
+    /* Right: icon buttons + Contact */
+    .nav-right { display: flex; align-items: center; gap: 0.6rem; }
+
+    .nav-icon-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-icon-btn:hover { background: rgba(255,255,255,0.1); }
+
+    .nav-icon-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .nav-cta {
+      background: var(--white); color: var(--black) !important;
+      padding: 0.52rem 1.4rem; border-radius: 100px;
+      font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; gap: 0.3rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .nav-cta:hover { background: #e8e8e8; transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: #111; border-bottom: 1px solid var(--dark-border);
+      padding: 1.5rem 6%; z-index: 99; flex-direction: column;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 600;
+      padding: 0.8rem 0; border-bottom: 1px solid #1e1e1e; transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover { color: var(--white); }
+    .mobile-menu a:last-child { border-bottom: none; color: var(--accent); }
+
+    /* ═══════════════════════════════════════
+       HERO — full black, centered, text only
+    ═══════════════════════════════════════ */
+    .hero {
+      background: var(--black);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 72px 8% 0;
+      position: relative; overflow: hidden;
+    }
+
+    /* Very subtle radial glow like the original */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 30%; left: 50%; transform: translate(-50%, -50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem; font-weight: 400;
+      margin-bottom: 2.2rem;
+      letter-spacing: 0.1px;
+      position: relative; z-index: 1;
+    }
+
+    .hero-badge-icon {
+      width: 22px; height: 22px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 5px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    .hero-badge-icon svg { width: 13px; height: 13px; fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .hero h1 {
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      font-weight: 800;
+      letter-spacing: -3px;
+      line-height: 1.0;
+      color: var(--white);
+      max-width: 1000px;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: rgba(255,255,255,0.45);
+      max-width: 520px;
+      line-height: 1.8;
+      position: relative; z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════
+       PORTFOLIO IMAGES STRIP (below hero)
+    ═══════════════════════════════════════ */
+    .portfolio-strip {
+      background: var(--black);
+      padding: 60px 6% 0;
+      display: flex; gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .portfolio-strip::-webkit-scrollbar { display: none; }
+
+    .strip-img {
+      flex: 0 0 320px; height: 200px;
+      border-radius: 14px; overflow: hidden;
+      background: #1a1a1a;
+    }
+
+    .strip-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ═══════════════════════════════════════
+       STATS STRIP
+    ═══════════════════════════════════════ */
+    .stats-strip {
+      background: var(--black);
+      border-top: 1px solid var(--dark-border);
+      padding: 3.5rem 6%;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      text-align: center; margin-top: 60px;
+    }
+
+    .stat-item { border-left: 1px solid var(--dark-border); padding: 0 1rem; }
+    .stat-item:first-child { border-left: none; }
+    .stat-item h3 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; color: var(--accent); letter-spacing: -1px; }
+    .stat-item p { font-size: 0.75rem; color: #555; margin-top: 0.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ═══════════════════════════════════════
+       SHARED SECTION STYLES
+    ═══════════════════════════════════════ */
+    .section { padding: 100px 6%; }
+
+    .section-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--muted); margin-bottom: 0.9rem;
+    }
+
+    .section-badge::before { content: ''; width: 18px; height: 2px; background: currentColor; display: block; }
+
+    .section-title { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.9rem; }
+
+    .section-desc { color: var(--muted); max-width: 580px; font-size: 1rem; line-height: 1.75; margin-bottom: 3rem; }
+
+    .section-header-row { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3rem; }
+
+    .btn-primary {
+      background: var(--black); color: var(--white);
+      padding: 0.72rem 1.65rem; border-radius: 100px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.875rem;
+      transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+
+    .btn-outline {
+      border: 2px solid var(--black); color: var(--black);
+      padding: 0.72rem 1.65rem; border-radius: 100px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.875rem;
+      transition: background 0.2s, color 0.2s; display: inline-block; white-space: nowrap;
+    }
+
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+
+    /* ═══════════════════════════════════════
+       PORTFOLIO SECTION
+    ═══════════════════════════════════════ */
+    .portfolio { background: var(--white); }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+
+    .project-card {
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--off-white);
+      transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
+    }
+
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .project-card:first-child { grid-column: span 2; }
+
+    .project-thumb { position: relative; overflow: hidden; aspect-ratio: 16/9; background: #ddd; }
+    .project-card:first-child .project-thumb { aspect-ratio: 21/9; }
+    .project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .project-card:hover .project-thumb img { transform: scale(1.04); }
+
+    .project-info { padding: 1.1rem 1.25rem; }
+    .project-tag { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 0.3rem; }
+    .project-info h3 { font-size: 0.98rem; font-weight: 700; }
+
+    /* ═══════════════════════════════════════
+       SERVICES
+    ═══════════════════════════════════════ */
+    .services { background: var(--off-white); }
+
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+
+    .service-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.75rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
+
+    .service-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1.1rem; }
+
+    .service-card h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.55rem; }
+    .service-card p { color: var(--muted); font-size: 0.84rem; line-height: 1.65; margin-bottom: 1rem; }
+    .service-link { font-size: 0.8rem; font-weight: 700; color: var(--black); display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+    .service-link:hover { gap: 0.7rem; }
+
+    /* ═══════════════════════════════════════
+       REVIEWS
+    ═══════════════════════════════════════ */
+    .reviews { background: var(--white); }
+
+    .reviews-platforms { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .platform-pill { background: var(--off-white); border: 1px solid var(--border); border-radius: 100px; padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+
+    .stars { color: #f5a623; letter-spacing: 1px; }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+
+    .testimonial-card { background: var(--off-white); border: 1px solid var(--border); border-radius: 16px; padding: 1.6rem; }
+    .testimonial-card .stars { font-size: 0.82rem; margin-bottom: 0.75rem; display: block; }
+    .testimonial-card p { font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .author-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
+    .author-info span { display: block; font-size: 0.84rem; font-weight: 700; }
+    .author-info small { color: var(--muted); font-size: 0.75rem; }
+
+    /* ═══════════════════════════════════════
+       FEATURED SOLUTIONS
+    ═══════════════════════════════════════ */
+    .featured-services { background: var(--off-white); }
+    .featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+
+    .featured-card { background: var(--white); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; align-items: center; transition: transform 0.3s, box-shadow 0.3s; }
+    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
+    .featured-card-content { padding: 2rem; }
+    .featured-card-content h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .featured-card-content p { color: var(--muted); font-size: 0.84rem; line-height: 1.6; margin-bottom: 1.25rem; }
+    .featured-card-image { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .featured-card:nth-child(1) .featured-card-image { background: linear-gradient(135deg, #0a0a0a, #1e3a5f); }
+    .featured-card:nth-child(2) .featured-card-image { background: linear-gradient(135deg, #1e3a5f, #0d7377); }
+    .featured-card:nth-child(3) .featured-card-image { background: linear-gradient(135deg, #4a0e8f, #c0392b); }
+    .featured-card:nth-child(4) .featured-card-image { background: linear-gradient(135deg, #2e7d32, #0a5c36); }
+
+    /* ═══════════════════════════════════════
+       KNOWLEDGE HUB
+    ═══════════════════════════════════════ */
+    .knowledge { background: var(--white); }
+    .blog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+
+    .blog-card { border-radius: 14px; overflow: hidden; background: var(--off-white); border: 1px solid var(--border); transition: transform 0.3s; cursor: pointer; }
+    .blog-card:hover { transform: translateY(-4px); }
+    .blog-thumb { aspect-ratio: 16/9; overflow: hidden; background: #ddd; }
+    .blog-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .blog-card:hover .blog-thumb img { transform: scale(1.06); }
+    .blog-body { padding: 1.1rem; }
+    .blog-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem; }
+    .blog-tag { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: var(--black); color: var(--white); padding: 0.17rem 0.5rem; border-radius: 4px; }
+    .blog-body h3 { font-size: 0.86rem; font-weight: 700; line-height: 1.45; margin-bottom: 0.7rem; }
+    .blog-read-more { font-size: 0.77rem; font-weight: 700; color: var(--muted); display: inline-flex; align-items: center; gap: 0.3rem; }
+
+    /* ═══════════════════════════════════════
+       CTA
+    ═══════════════════════════════════════ */
+    .cta-section { background: var(--black); color: var(--white); padding: 100px 6%; text-align: center; }
+    .cta-section .section-badge { color: rgba(255,255,255,0.35); justify-content: center; }
+    .cta-section .section-badge::before { background: rgba(255,255,255,0.35); }
+    .cta-section .section-title { color: var(--white); }
+    .cta-section .section-desc { color: rgba(255,255,255,0.45); margin: 0 auto 2.5rem; }
+
+    .btn-accent { background: var(--accent); color: var(--black); padding: 0.95rem 2.5rem; border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; display: inline-block; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(200,240,61,0.3); }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer { background: #0d0d0d; color: #ccc; padding: 80px 6% 40px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 4rem; }
+    .footer-brand-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--white); display: block; margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.85rem; color: #555; line-height: 1.7; max-width: 260px; }
+    .footer-col h4 { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--white); margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: 1.2px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a { color: #555; font-size: 0.84rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-col > p { color: #555; font-size: 0.84rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    .footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.77rem; color: #444; }
+    .footer-bottom a { color: #444; transition: color 0.2s; }
+    .footer-bottom a:hover { color: #888; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1200px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    @media (max-width: 1024px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-card:first-child { grid-column: span 2; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .blog-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-pill, .nav-icon-btn { display: none; }
+      .hamburger { display: flex; }
+      .hero h1 { letter-spacing: -2px; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(3) { border-left: none; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:first-child { grid-column: span 1; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-card-image { height: 140px; }
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .section-header-row { flex-direction: column; align-items: flex-start; }
+      .portfolio-strip { padding: 40px 4% 0; }
+      .strip-img { flex: 0 0 220px; height: 140px; }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════ -->
+  <nav>
+    <!-- Logo -->
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-icon">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      Medito
+    </a>
+
+    <!-- Pill nav links -->
+    <div class="nav-pill">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#portfolio">Projects</a>
+      <a href="#migration">Shopify Migration</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+
+    <!-- Right side: icon buttons + contact -->
+    <div class="nav-right">
+      <!-- User icon -->
+      <div class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <!-- Lock icon -->
+      <div class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <a href="#contact" class="nav-cta">Contact ↗</a>
+    </div>
+
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="toggleMenu()">Home</a>
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#services" onclick="toggleMenu()">Services</a>
+    <a href="#portfolio" onclick="toggleMenu()">Projects</a>
+    <a href="#migration" onclick="toggleMenu()">Shopify Migration</a>
+    <a href="#reviews" onclick="toggleMenu()">Reviews</a>
+    <a href="#contact" onclick="toggleMenu()">Contact ↗</a>
+  </div>
+
+  <!-- ══════════════════════════════════
+       HERO — full black, centered
+  ══════════════════════════════════ -->
+  <section class="hero" id="home">
+    <!-- Badge: lock icon + text -->
+    <div class="hero-badge">
+      <span class="hero-badge-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </span>
+      Shopify Agency — Since 2015
+    </div>
+
+    <!-- Big headline — two lines exactly as in screenshot -->
+    <h1>We build high-performing<br />Shopify stores</h1>
+
+    <!-- Subtitle — exact text from the website -->
+    <p class="hero-sub">
+      We are a Shopify agency specializing in bespoke theme design, development, optimization, and custom app integrations.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PORTFOLIO IMAGE STRIP (scrollable)
+  ══════════════════════════════════ -->
+  <div class="portfolio-strip">
+    <div class="strip-img">
+      <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    </div>
+    <div class="strip-img">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    </div>
+    <div class="strip-img">
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    </div>
+    <div class="strip-img">
+      <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    </div>
+    <div class="strip-img">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       STATS
+  ══════════════════════════════════ -->
+  <div class="stats-strip">
+    <div class="stat-item"><h3>+230</h3><p>Deployments</p></div>
+    <div class="stat-item"><h3>4</h3><p>Continents</p></div>
+    <div class="stat-item"><h3>57</h3><p>Migrations</p></div>
+    <div class="stat-item"><h3>2015</h3><p>Founded</p></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PORTFOLIO SECTION
+  ══════════════════════════════════ -->
+  <section class="section portfolio" id="portfolio">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">Recent Projects</span>
+        <h2 class="section-title">Our Portfolio</h2>
+        <p class="section-desc">Discover our recent work and see how leading brands have partnered with us to bring their vision to life.</p>
+      </div>
+      <a href="#portfolio" class="btn-outline">All Projects</a>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&q=80&auto=format&fit=crop" alt="Project One" loading="lazy" />
+        </div>
+        <div class="project-info"><p class="project-tag">E-Commerce · Design</p><h3>Project Name One</h3></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&auto=format&fit=crop" alt="Project Two" loading="lazy" />
+        </div>
+        <div class="project-info"><p class="project-tag">Development · Integration</p><h3>Project Name Two</h3></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80&auto=format&fit=crop" alt="Project Three" loading="lazy" />
+        </div>
+        <div class="project-info"><p class="project-tag">Branding · Web</p><h3>Project Name Three</h3></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=600&q=80&auto=format&fit=crop" alt="Project Four" loading="lazy" />
+        </div>
+        <div class="project-info"><p class="project-tag">Migration · SEO</p><h3>Project Name Four</h3></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop" alt="Project Five" loading="lazy" />
+        </div>
+        <div class="project-info"><p class="project-tag">Optimization · CRO</p><h3>Project Name Five</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SERVICES
+  ══════════════════════════════════ -->
+  <section class="section services" id="services">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">Transparent Pricing</span>
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-desc">Whether you're building from scratch or refining the details, we provide customized support designed around your goals.</p>
+      </div>
+      <a href="#services" class="btn-outline">View All</a>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🛒</div>
+        <h3>Store Design &amp; Development</h3>
+        <p>Bespoke storefront design and development built to convert — combining aesthetics with high performance.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🚀</div>
+        <h3>Conversion Rate Optimization</h3>
+        <p>Data-driven CRO strategies to turn more of your existing traffic into paying customers and increase order value.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔄</div>
+        <h3>Platform Migration</h3>
+        <p>Seamless migration to your target platform with preserved SEO, zero data loss, and zero downtime guaranteed.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">📧</div>
+        <h3>Email Marketing Automations</h3>
+        <p>High-converting automated flows and retention campaigns that drive consistent repeat revenue for your brand.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔍</div>
+        <h3>SEO &amp; Speed Optimization</h3>
+        <p>Technical SEO and speed strategies that grow your organic visibility and deliver blazing-fast page performance.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🤖</div>
+        <h3>AI &amp; Search Visibility (GEO)</h3>
+        <p>We improve your brand's visibility inside ChatGPT, Gemini, and other AI-powered search engines at scale.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔌</div>
+        <h3>API Integration</h3>
+        <p>Custom third-party API integrations that connect your store, apps, and business tools into one seamless ecosystem.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🛡️</div>
+        <h3>Malware Fixing &amp; Security</h3>
+        <p>Fast, thorough malware removal and security hardening to protect your website, customer data, and brand trust.</p>
+        <a class="service-link" href="#">Learn more →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       REVIEWS
+  ══════════════════════════════════ -->
+  <section class="section reviews" id="reviews">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">100% Satisfaction</span>
+        <h2 class="section-title">Backed by a Decade<br />of Happy Brands.</h2>
+        <p class="section-desc">Don't just take our word for it — our clients' feedback speaks volumes about our work.</p>
+      </div>
+    </div>
+    <div class="reviews-platforms">
+      <div class="platform-pill"><span class="stars">★★★★★</span> 5.0 · Google Reviews</div>
+      <div class="platform-pill"><span class="stars">★★★★★</span> 5.0 · Trustpilot</div>
+      <div class="platform-pill"><span class="stars">★★★★★</span> Verified Partner</div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"An exceptional team that truly understands digital commerce. They delivered our redesign on time and results were immediately visible in our conversion rates."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JD</div>
+          <div class="author-info"><span>Jane Doe</span><small>CEO, Brand Name</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"The migration was completely seamless. Zero downtime, all SEO preserved, and our new platform performs significantly faster than before."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">MS</div>
+          <div class="author-info"><span>Mark Smith</span><small>Founder, Store Name</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"Professional, communicative, and incredibly skilled. Our email automations now generate a significant portion of monthly revenue with zero manual effort."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">AL</div>
+          <div class="author-info"><span>Amy Lee</span><small>Marketing Director, Co.</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FEATURED SOLUTIONS
+  ══════════════════════════════════ -->
+  <section class="section featured-services" id="about">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">What We Do</span>
+        <h2 class="section-title">Solutions We Offer</h2>
+      </div>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card reveal">
+        <div class="featured-card-content">
+          <h3>Store Design &amp; Optimization</h3>
+          <p>We design, build, and optimize high-performing Shopify stores for growing brands worldwide.</p>
+          <a class="btn-primary" href="#services">Explore →</a>
+        </div>
+        <div class="featured-card-image">🛍️</div>
+      </div>
+      <div class="featured-card reveal">
+        <div class="featured-card-content">
+          <h3>AI &amp; Search Visibility</h3>
+          <p>We improve your brand's visibility inside AI search engines and organic search results.</p>
+          <a class="btn-primary" href="#services">Explore →</a>
+        </div>
+        <div class="featured-card-image">🤖</div>
+      </div>
+      <div class="featured-card reveal">
+        <div class="featured-card-content">
+          <h3>API &amp; Custom Integrations</h3>
+          <p>Seamless API integrations that connect every tool and platform in your business stack.</p>
+          <a class="btn-primary" href="#services">Explore →</a>
+        </div>
+        <div class="featured-card-image">🔌</div>
+      </div>
+      <div class="featured-card reveal">
+        <div class="featured-card-content">
+          <h3>Security &amp; Malware Removal</h3>
+          <p>Fast malware removal and ongoing security hardening to protect your site and customer data.</p>
+          <a class="btn-primary" href="#services">Explore →</a>
+        </div>
+        <div class="featured-card-image">🛡️</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       KNOWLEDGE HUB
+  ══════════════════════════════════ -->
+  <section class="section knowledge" id="migration">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">Up Your Knowledge</span>
+        <h2 class="section-title">Knowledge Hub</h2>
+        <p class="section-desc">Selected topics, recent updates &amp; creative ideas from our team.</p>
+      </div>
+      <a href="#" class="btn-outline">All Articles</a>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card reveal">
+        <div class="blog-thumb">
+          <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80&auto=format&fit=crop" alt="AI Commerce" loading="lazy" />
+        </div>
+        <div class="blog-body">
+          <div class="blog-tags"><span class="blog-tag">AI Commerce</span><span class="blog-tag">Strategy</span></div>
+          <h3>What Is Agentic Commerce and Why It Changes Everything</h3>
+          <a class="blog-read-more" href="#">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal">
+        <div class="blog-thumb">
+          <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&q=80&auto=format&fit=crop" alt="SEO" loading="lazy" />
+        </div>
+        <div class="blog-body">
+          <div class="blog-tags"><span class="blog-tag">SEO</span><span class="blog-tag">AI</span></div>
+          <h3>How AI Is Reshaping Search Visibility for E-Commerce Brands</h3>
+          <a class="blog-read-more" href="#">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal">
+        <div class="blog-thumb">
+          <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&q=80&auto=format&fit=crop" alt="Design" loading="lazy" />
+        </div>
+        <div class="blog-body">
+          <div class="blog-tags"><span class="blog-tag">Design</span><span class="blog-tag">UX</span></div>
+          <h3>Why Great Website Design Drives Conversions for Brands</h3>
+          <a class="blog-read-more" href="#">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal">
+        <div class="blog-thumb">
+          <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80&auto=format&fit=crop" alt="Marketing" loading="lazy" />
+        </div>
+        <div class="blog-body">
+          <div class="blog-tags"><span class="blog-tag">Marketing</span><span class="blog-tag">Automation</span></div>
+          <h3>How to Automate WhatsApp Marketing for Retail Businesses</h3>
+          <a class="blog-read-more" href="#">Read more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CTA
+  ══════════════════════════════════ -->
+  <section class="cta-section" id="contact">
+    <span class="section-badge">Trusted Shopify Agency</span>
+    <h2 class="section-title">Let's Work Together</h2>
+    <p class="section-desc">Our mission is simple — provide the best long-term solutions for your Shopify store, backed by over a decade of expertise.</p>
+    <a href="#contact" class="btn-accent">Contact Us</a>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-name">Medito</span>
+        <p>Our mission is simple: to provide the best long-term solutions for your Shopify store, backed by over a decade of expertise.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Store Design &amp; Development</a></li>
+          <li><a href="#">Conversion Rate Optimization</a></li>
+          <li><a href="#">Email Marketing</a></li>
+          <li><a href="#">SEO Services</a></li>
+          <li><a href="#">Migration Service</a></li>
+          <li><a href="#">Speed Optimization</a></li>
+          <li><a href="#">API Integration</a></li>
+          <li><a href="#">Malware Fixing &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Portfolio</a></li>
+          <li><a href="#">Blog / News</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>Whether you're migrating to Shopify or looking for ongoing support, our team is here to guide you every step of the way.</p>
+        <a href="#contact" class="btn-accent">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026, Medito. All rights reserved.</p>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <span class="stars" style="font-size:0.78rem;">★★★★★</span>
+        <span>Rated 5/5 by our clients</span>
+      </div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.querySelector('.hamburger');
+      if (!menu.contains(e.target) && !btn.contains(e.target)) menu.classList.remove('open');
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Active nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-pill a');
+
+    window.addEventListener('scroll', () => {
+      let current = 'home';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 130) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
