@@ -1,907 +1,1016 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medito — Shopify Agency Since 2015</title>
-  <meta name="description" content="We build high-performing Shopify stores. Bespoke theme design, development, optimization, and custom app integrations." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black: #0a0a0a;
-      --white: #ffffff;
-      --off-white: #f5f3ee;
-      --accent: #c8f03d;
-      --muted: #888888;
-      --border: #e2e0db;
-      --dark-border: #2a2a2a;
-    }
-
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--off-white); color: var(--black); line-height: 1.6; overflow-x: hidden; }
-    h1, h2, h3, h4 { font-family: 'Syne', sans-serif; line-height: 1.15; }
-    a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; display: block; }
-
-    /* ═══════════════════════════════════════
-       NAVIGATION — matches screenshot exactly
-    ═══════════════════════════════════════ */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--dark-border);
-      padding: 0 3%;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
-    }
-
-    /* Logo: square icon + brand name */
-    .nav-logo {
-      display: flex; align-items: center; gap: 0.55rem;
-      font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700;
-      color: var(--white);
-    }
-
-    .nav-logo-icon {
-      width: 36px; height: 36px;
-      background: var(--white);
-      border-radius: 8px;
-      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-      gap: 3px; padding: 7px;
-    }
-
-    .nav-logo-icon span {
-      background: var(--black);
-      border-radius: 2px;
-    }
-
-    /* Pill nav container */
-    .nav-pill {
-      display: flex; align-items: center;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 100px;
-      padding: 5px 6px;
-      gap: 2px;
-    }
-
-    .nav-pill a {
-      color: rgba(255,255,255,0.65);
-      font-size: 0.875rem; font-weight: 500;
-      padding: 0.42rem 1.1rem;
-      border-radius: 100px;
-      transition: color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-
-    .nav-pill a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
-
-    .nav-pill a.active {
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 0.38rem 1.1rem;
-    }
-
-    /* Right: icon buttons + Contact */
-    .nav-right { display: flex; align-items: center; gap: 0.6rem; }
-
-    .nav-icon-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: transparent;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--white); cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .nav-icon-btn:hover { background: rgba(255,255,255,0.1); }
-
-    .nav-icon-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    .nav-cta {
-      background: var(--white); color: var(--black) !important;
-      padding: 0.52rem 1.4rem; border-radius: 100px;
-      font-size: 0.9rem; font-weight: 600;
-      display: flex; align-items: center; gap: 0.3rem;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .nav-cta:hover { background: #e8e8e8; transform: translateY(-1px); }
-
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; background: none; border: none; padding: 4px;
-    }
-
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
-
-    /* Mobile menu */
-    .mobile-menu {
-      display: none; position: fixed; top: 72px; left: 0; right: 0;
-      background: #111; border-bottom: 1px solid var(--dark-border);
-      padding: 1.5rem 6%; z-index: 99; flex-direction: column;
-    }
-
-    .mobile-menu.open { display: flex; }
-
-    .mobile-menu a {
-      color: rgba(255,255,255,0.6); font-size: 1rem; font-weight: 600;
-      padding: 0.8rem 0; border-bottom: 1px solid #1e1e1e; transition: color 0.2s;
-    }
-
-    .mobile-menu a:hover { color: var(--white); }
-    .mobile-menu a:last-child { border-bottom: none; color: var(--accent); }
-
-    /* ═══════════════════════════════════════
-       HERO — full black, centered, text only
-    ═══════════════════════════════════════ */
-    .hero {
-      background: var(--black);
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 72px 8% 0;
-      position: relative; overflow: hidden;
-    }
-
-    /* Very subtle radial glow like the original */
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 30%; left: 50%; transform: translate(-50%, -50%);
-      width: 700px; height: 400px;
-      background: radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.55rem;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.9rem; font-weight: 400;
-      margin-bottom: 2.2rem;
-      letter-spacing: 0.1px;
-      position: relative; z-index: 1;
-    }
-
-    .hero-badge-icon {
-      width: 22px; height: 22px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 5px;
-      display: inline-flex; align-items: center; justify-content: center;
-    }
-
-    .hero-badge-icon svg { width: 13px; height: 13px; fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    .hero h1 {
-      font-size: clamp(3.2rem, 8vw, 7.5rem);
-      font-weight: 800;
-      letter-spacing: -3px;
-      line-height: 1.0;
-      color: var(--white);
-      max-width: 1000px;
-      margin-bottom: 2rem;
-      position: relative; z-index: 1;
-    }
-
-    .hero-sub {
-      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-      color: rgba(255,255,255,0.45);
-      max-width: 520px;
-      line-height: 1.8;
-      position: relative; z-index: 1;
-    }
-
-    /* ═══════════════════════════════════════
-       PORTFOLIO IMAGES STRIP (below hero)
-    ═══════════════════════════════════════ */
-    .portfolio-strip {
-      background: var(--black);
-      padding: 60px 6% 0;
-      display: flex; gap: 1rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .portfolio-strip::-webkit-scrollbar { display: none; }
-
-    .strip-img {
-      flex: 0 0 320px; height: 200px;
-      border-radius: 14px; overflow: hidden;
-      background: #1a1a1a;
-    }
-
-    .strip-img img { width: 100%; height: 100%; object-fit: cover; }
-
-    /* ═══════════════════════════════════════
-       STATS STRIP
-    ═══════════════════════════════════════ */
-    .stats-strip {
-      background: var(--black);
-      border-top: 1px solid var(--dark-border);
-      padding: 3.5rem 6%;
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      text-align: center; margin-top: 60px;
-    }
-
-    .stat-item { border-left: 1px solid var(--dark-border); padding: 0 1rem; }
-    .stat-item:first-child { border-left: none; }
-    .stat-item h3 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; color: var(--accent); letter-spacing: -1px; }
-    .stat-item p { font-size: 0.75rem; color: #555; margin-top: 0.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-
-    /* ═══════════════════════════════════════
-       SHARED SECTION STYLES
-    ═══════════════════════════════════════ */
-    .section { padding: 100px 6%; }
-
-    .section-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--muted); margin-bottom: 0.9rem;
-    }
-
-    .section-badge::before { content: ''; width: 18px; height: 2px; background: currentColor; display: block; }
-
-    .section-title { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.9rem; }
-
-    .section-desc { color: var(--muted); max-width: 580px; font-size: 1rem; line-height: 1.75; margin-bottom: 3rem; }
-
-    .section-header-row { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3rem; }
-
-    .btn-primary {
-      background: var(--black); color: var(--white);
-      padding: 0.72rem 1.65rem; border-radius: 100px;
-      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.875rem;
-      transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
-    }
-
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-
-    .btn-outline {
-      border: 2px solid var(--black); color: var(--black);
-      padding: 0.72rem 1.65rem; border-radius: 100px;
-      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.875rem;
-      transition: background 0.2s, color 0.2s; display: inline-block; white-space: nowrap;
-    }
-
-    .btn-outline:hover { background: var(--black); color: var(--white); }
-
-    /* ═══════════════════════════════════════
-       PORTFOLIO SECTION
-    ═══════════════════════════════════════ */
-    .portfolio { background: var(--white); }
-
-    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
-
-    .project-card {
-      border-radius: 16px; overflow: hidden;
-      border: 1px solid var(--border); background: var(--off-white);
-      transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
-    }
-
-    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .project-card:first-child { grid-column: span 2; }
-
-    .project-thumb { position: relative; overflow: hidden; aspect-ratio: 16/9; background: #ddd; }
-    .project-card:first-child .project-thumb { aspect-ratio: 21/9; }
-    .project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .project-card:hover .project-thumb img { transform: scale(1.04); }
-
-    .project-info { padding: 1.1rem 1.25rem; }
-    .project-tag { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 0.3rem; }
-    .project-info h3 { font-size: 0.98rem; font-weight: 700; }
-
-    /* ═══════════════════════════════════════
-       SERVICES
-    ═══════════════════════════════════════ */
-    .services { background: var(--off-white); }
-
-    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
-
-    .service-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 18px; padding: 1.75rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
-
-    .service-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1.1rem; }
-
-    .service-card h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.55rem; }
-    .service-card p { color: var(--muted); font-size: 0.84rem; line-height: 1.65; margin-bottom: 1rem; }
-    .service-link { font-size: 0.8rem; font-weight: 700; color: var(--black); display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
-    .service-link:hover { gap: 0.7rem; }
-
-    /* ═══════════════════════════════════════
-       REVIEWS
-    ═══════════════════════════════════════ */
-    .reviews { background: var(--white); }
-
-    .reviews-platforms { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
-
-    .platform-pill { background: var(--off-white); border: 1px solid var(--border); border-radius: 100px; padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-
-    .stars { color: #f5a623; letter-spacing: 1px; }
-
-    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
-
-    .testimonial-card { background: var(--off-white); border: 1px solid var(--border); border-radius: 16px; padding: 1.6rem; }
-    .testimonial-card .stars { font-size: 0.82rem; margin-bottom: 0.75rem; display: block; }
-    .testimonial-card p { font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
-    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
-    .author-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
-    .author-info span { display: block; font-size: 0.84rem; font-weight: 700; }
-    .author-info small { color: var(--muted); font-size: 0.75rem; }
-
-    /* ═══════════════════════════════════════
-       FEATURED SOLUTIONS
-    ═══════════════════════════════════════ */
-    .featured-services { background: var(--off-white); }
-    .featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-
-    .featured-card { background: var(--white); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; align-items: center; transition: transform 0.3s, box-shadow 0.3s; }
-    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
-    .featured-card-content { padding: 2rem; }
-    .featured-card-content h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .featured-card-content p { color: var(--muted); font-size: 0.84rem; line-height: 1.6; margin-bottom: 1.25rem; }
-    .featured-card-image { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-    .featured-card:nth-child(1) .featured-card-image { background: linear-gradient(135deg, #0a0a0a, #1e3a5f); }
-    .featured-card:nth-child(2) .featured-card-image { background: linear-gradient(135deg, #1e3a5f, #0d7377); }
-    .featured-card:nth-child(3) .featured-card-image { background: linear-gradient(135deg, #4a0e8f, #c0392b); }
-    .featured-card:nth-child(4) .featured-card-image { background: linear-gradient(135deg, #2e7d32, #0a5c36); }
-
-    /* ═══════════════════════════════════════
-       KNOWLEDGE HUB
-    ═══════════════════════════════════════ */
-    .knowledge { background: var(--white); }
-    .blog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
-
-    .blog-card { border-radius: 14px; overflow: hidden; background: var(--off-white); border: 1px solid var(--border); transition: transform 0.3s; cursor: pointer; }
-    .blog-card:hover { transform: translateY(-4px); }
-    .blog-thumb { aspect-ratio: 16/9; overflow: hidden; background: #ddd; }
-    .blog-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .blog-card:hover .blog-thumb img { transform: scale(1.06); }
-    .blog-body { padding: 1.1rem; }
-    .blog-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem; }
-    .blog-tag { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: var(--black); color: var(--white); padding: 0.17rem 0.5rem; border-radius: 4px; }
-    .blog-body h3 { font-size: 0.86rem; font-weight: 700; line-height: 1.45; margin-bottom: 0.7rem; }
-    .blog-read-more { font-size: 0.77rem; font-weight: 700; color: var(--muted); display: inline-flex; align-items: center; gap: 0.3rem; }
-
-    /* ═══════════════════════════════════════
-       CTA
-    ═══════════════════════════════════════ */
-    .cta-section { background: var(--black); color: var(--white); padding: 100px 6%; text-align: center; }
-    .cta-section .section-badge { color: rgba(255,255,255,0.35); justify-content: center; }
-    .cta-section .section-badge::before { background: rgba(255,255,255,0.35); }
-    .cta-section .section-title { color: var(--white); }
-    .cta-section .section-desc { color: rgba(255,255,255,0.45); margin: 0 auto 2.5rem; }
-
-    .btn-accent { background: var(--accent); color: var(--black); padding: 0.95rem 2.5rem; border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; display: inline-block; transition: transform 0.2s, box-shadow 0.2s; }
-    .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(200,240,61,0.3); }
-
-    /* ═══════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════ */
-    footer { background: #0d0d0d; color: #ccc; padding: 80px 6% 40px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 4rem; }
-    .footer-brand-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--white); display: block; margin-bottom: 1rem; }
-    .footer-brand p { font-size: 0.85rem; color: #555; line-height: 1.7; max-width: 260px; }
-    .footer-col h4 { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--white); margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: 1.2px; }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 0.6rem; }
-    .footer-col ul li a { color: #555; font-size: 0.84rem; transition: color 0.2s; }
-    .footer-col ul li a:hover { color: var(--white); }
-    .footer-col > p { color: #555; font-size: 0.84rem; line-height: 1.7; margin-bottom: 1.5rem; }
-    .footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.77rem; color: #444; }
-    .footer-bottom a { color: #444; transition: color 0.2s; }
-    .footer-bottom a:hover { color: #888; }
-
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ═══════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════ */
-    @media (max-width: 1200px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
-
-    @media (max-width: 1024px) {
-      .projects-grid { grid-template-columns: repeat(2, 1fr); }
-      .project-card:first-child { grid-column: span 2; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .blog-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 768px) {
-      .nav-pill, .nav-icon-btn { display: none; }
-      .hamburger { display: flex; }
-      .hero h1 { letter-spacing: -2px; }
-      .stats-strip { grid-template-columns: repeat(2, 1fr); }
-      .stat-item:nth-child(3) { border-left: none; }
-      .services-grid { grid-template-columns: 1fr 1fr; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card:first-child { grid-column: span 1; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .featured-grid { grid-template-columns: 1fr; }
-      .featured-card { grid-template-columns: 1fr; }
-      .featured-card-image { height: 140px; }
-      .blog-grid { grid-template-columns: 1fr 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .section-header-row { flex-direction: column; align-items: flex-start; }
-      .portfolio-strip { padding: 40px 4% 0; }
-      .strip-img { flex: 0 0 220px; height: 140px; }
-    }
-
-    @media (max-width: 480px) {
-      .services-grid { grid-template-columns: 1fr; }
-      .blog-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Medito Digital — Shopify Agency Since 2015</title>
+<meta name="description" content="We build high-performing Shopify stores. Bespoke theme design, development, optimization, and custom app integrations since 2015."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   RESET & TOKENS
+============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --black:   #050505;
+  --dark:    #0d0d0d;
+  --dark2:   #141414;
+  --border:  #1e1e1e;
+  --border2: #2c2c2c;
+  --white:   #ffffff;
+  --cream:   #f6f4ef;
+  --cream2:  #f0ede7;
+  --muted-d: rgba(255,255,255,0.42);
+  --muted-d2:rgba(255,255,255,0.62);
+  --muted-l: #857f77;
+  --accent:  #c8f03d;
+  --r-s:10px; --r-m:16px; --r-l:22px; --r-xl:30px;
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--cream);
+  color:#1a1a1a;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* ============================================================
+   NAV  — identical pill layout to Medito screenshot
+============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:70px;
+  background:rgba(5,5,5,0.96);
+  backdrop-filter:saturate(180%) blur(28px);
+  -webkit-backdrop-filter:saturate(180%) blur(28px);
+  display:flex;align-items:center;
+  padding:0 2.5%;
+  border-bottom:1px solid var(--border);
+}
+
+/* ── Logo (white square grid icon + wordmark) */
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:1.15rem;font-weight:600;
+  color:var(--white);letter-spacing:-0.3px;
+  flex-shrink:0;
+}
+
+.logo-mark{
+  width:36px;height:36px;
+  background:var(--white);border-radius:9px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:5px;padding:8.5px;
+}
+.logo-mark span{background:var(--black);border-radius:2.5px;display:block;}
+
+/* ── Pill nav (absolute-centered) */
+.nav-pill{
+  position:absolute;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;
+  border:1px solid var(--border2);
+  border-radius:100px;
+  padding:5px 6px;
+  gap:1px;
+  background:var(--dark);
+}
+
+.nav-pill a{
+  color:var(--muted-d2);
+  font-size:0.855rem;font-weight:450;
+  padding:7px 16px;border-radius:100px;
+  transition:color .18s,background .18s;
+  white-space:nowrap;letter-spacing:-0.1px;
+}
+.nav-pill a:hover{color:var(--white);background:rgba(255,255,255,0.06);}
+.nav-pill a.active{
+  color:var(--white);font-weight:520;
+  background:#1c1c1c;
+  border:1px solid var(--border2);
+  padding:6px 16px;
+}
+
+/* ── Right side */
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--border2);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted-d2);cursor:pointer;
+  transition:background .18s,border-color .18s,color .18s;
+}
+.icon-btn:hover{background:var(--dark2);border-color:#3e3e3e;color:var(--white);}
+.icon-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+
+.cta-btn{
+  background:var(--white);color:var(--black);
+  font-size:0.855rem;font-weight:600;letter-spacing:-0.2px;
+  padding:8px 20px;border-radius:100px;
+  display:flex;align-items:center;gap:4px;
+  transition:background .18s,transform .18s,box-shadow .18s;
+}
+.cta-btn:hover{background:#efefef;transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,255,255,.1);}
+
+/* Hamburger */
+.burger{display:none;flex-direction:column;gap:4.5px;background:none;border:none;cursor:pointer;padding:6px;margin-left:auto;}
+.burger span{display:block;width:20px;height:1.5px;background:var(--white);border-radius:2px;transition:all .3s;}
+
+/* Mobile menu */
+.mob{
+  display:none;position:fixed;
+  top:70px;left:0;right:0;
+  background:#0a0a0a;
+  border-bottom:1px solid var(--border);
+  flex-direction:column;z-index:299;
+  padding:1rem 6%;
+}
+.mob.open{display:flex;}
+.mob a{color:var(--muted-d2);font-size:.95rem;font-weight:500;padding:.75rem 0;border-bottom:1px solid var(--border);transition:color .2s;}
+.mob a:hover{color:var(--white);}
+.mob a:last-child{border-bottom:none;color:var(--accent);}
+
+/* ============================================================
+   HERO — pure black, full-viewport, centered text only
+============================================================ */
+.hero{
+  min-height:100vh;
+  background:var(--black);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:70px 8% 0;
+  position:relative;overflow:hidden;
+}
+
+/* Subtle grid lines */
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.017) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.017) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 20%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 20%,transparent 100%);
+}
+
+/* Radial glow behind text */
+.hero-glow{
+  position:absolute;
+  top:40%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:600px;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,0.025) 0%,transparent 68%);
+}
+
+.hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+
+/* Badge */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:9px;
+  color:rgba(255,255,255,0.48);
+  font-size:0.875rem;font-weight:400;letter-spacing:.05px;
+  margin-bottom:34px;
+  animation:rise .9s cubic-bezier(.22,1,.36,1) both;
+}
+.badge-icon{
+  width:22px;height:22px;border-radius:6px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.badge-icon svg{width:11px;height:11px;fill:none;stroke:rgba(255,255,255,.65);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Giant headline */
+.hero h1{
+  font-size:clamp(3.8rem,9.5vw,9.5rem);
+  font-weight:800;
+  letter-spacing:-5px;
+  line-height:.96;
+  color:var(--white);
+  max-width:1100px;
+  margin-bottom:32px;
+  animation:rise 1s .1s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Subtitle */
+.hero-sub{
+  font-size:clamp(.95rem,1.3vw,1.05rem);
+  color:rgba(255,255,255,.38);
+  max-width:490px;line-height:1.88;
+  animation:rise 1.1s .22s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Scrolling image strip below hero text */
+.hero-strip{
+  position:relative;z-index:1;
+  width:100%;margin-top:72px;
+  display:flex;gap:16px;overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent 0%,black 10%,black 90%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,black 10%,black 90%,transparent 100%);
+}
+.strip-track{
+  display:flex;gap:16px;flex-shrink:0;
+  animation:scroll 30s linear infinite;
+}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.strip-img{
+  flex-shrink:0;width:340px;height:215px;
+  border-radius:var(--r-m);overflow:hidden;
+  border:1px solid rgba(255,255,255,.05);
+  background:#111;
+}
+.strip-img img{width:100%;height:100%;object-fit:cover;}
+
+/* ============================================================
+   STATS BAR
+============================================================ */
+.stats{
+  background:var(--black);
+  border-top:1px solid var(--border);
+  padding:52px 6%;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  position:relative;
+}
+.stat{
+  text-align:center;
+  border-left:1px solid var(--border);
+  padding:6px 0;
+}
+.stat:first-child{border-left:none;}
+.stat-n{
+  font-size:clamp(2.6rem,4.5vw,4rem);
+  font-weight:800;letter-spacing:-2.5px;
+  color:var(--accent);line-height:1;display:block;
+}
+.stat-l{
+  font-size:.7rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:2px;
+  color:rgba(255,255,255,.28);display:block;margin-top:7px;
+}
+
+/* ============================================================
+   SHARED LIGHT SECTION
+============================================================ */
+.sec{padding:110px 6%;}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:2.2px;color:var(--muted-l);
+  margin-bottom:14px;
+}
+.eyebrow::before{content:'';display:block;width:16px;height:1.5px;background:currentColor;}
+
+.sec-title{
+  font-size:clamp(2.2rem,3.8vw,3.4rem);
+  font-weight:800;letter-spacing:-2px;line-height:1.08;
+  color:#111;margin-bottom:14px;
+}
+.sec-desc{color:var(--muted-l);font-size:.98rem;line-height:1.82;max-width:540px;margin-bottom:52px;}
+
+.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:48px;}
+.sec-hdr .sec-desc{margin-bottom:0;}
+
+/* Buttons */
+.btn-dark{
+  background:#111;color:var(--white);
+  font-size:.855rem;font-weight:600;letter-spacing:-.2px;
+  padding:10px 24px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:background .2s,transform .18s,box-shadow .18s;
+}
+.btn-dark:hover{background:#252525;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.22);}
+
+.btn-ghost{
+  background:transparent;color:#111;
+  font-size:.855rem;font-weight:600;letter-spacing:-.2px;
+  padding:10px 24px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:6px;
+  border:1.5px solid #c8c4bc;
+  transition:border-color .2s,background .2s,transform .18s,color .18s;
+  white-space:nowrap;
+}
+.btn-ghost:hover{border-color:#111;background:#111;color:#fff;transform:translateY(-2px);}
+
+.btn-accent{
+  background:var(--accent);color:var(--black);
+  font-size:.95rem;font-weight:700;letter-spacing:-.3px;
+  padding:14px 38px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:transform .18s,box-shadow .18s;
+}
+.btn-accent:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(200,240,61,.35);}
+
+/* Scroll reveal */
+.r{opacity:0;transform:translateY(28px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);}
+.r.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.05s}.d2{transition-delay:.13s}.d3{transition-delay:.21s}.d4{transition-delay:.29s}
+
+/* ============================================================
+   PORTFOLIO
+============================================================ */
+.portfolio{background:#fff;}
+
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+.proj-card{
+  border-radius:var(--r-l);overflow:hidden;
+  border:1px solid #e8e4dd;background:var(--cream);
+  cursor:pointer;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;
+}
+.proj-card:hover{transform:translateY(-9px);box-shadow:0 28px 56px rgba(0,0,0,.1);}
+.proj-card:first-child{grid-column:span 2;}
+
+.proj-thumb{overflow:hidden;background:#e0ddd6;position:relative;}
+.proj-card:first-child .proj-thumb{aspect-ratio:2.2/1;}
+.proj-thumb{aspect-ratio:16/9;}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.proj-card:hover .proj-thumb img{transform:scale(1.06);}
+
+.proj-info{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
+.proj-tag{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted-l);margin-bottom:4px;}
+.proj-name{font-size:.94rem;font-weight:700;letter-spacing:-.3px;color:#111;}
+
+.proj-arr{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid #e0ddd6;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;color:var(--muted-l);flex-shrink:0;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.proj-card:hover .proj-arr{background:#111;border-color:#111;color:#fff;}
+
+/* ============================================================
+   SERVICES
+============================================================ */
+.services{background:var(--cream);}
+
+.srv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+.srv-card{
+  background:#fff;border:1px solid #e8e4dd;
+  border-radius:var(--r-l);padding:28px 24px;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .2s;
+}
+.srv-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(0,0,0,.08);border-color:#d4d0c9;}
+
+.srv-icon{
+  width:44px;height:44px;border-radius:var(--r-s);
+  background:#111;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;margin-bottom:20px;
+}
+.srv-card h3{font-size:.9rem;font-weight:700;letter-spacing:-.25px;color:#111;margin-bottom:9px;}
+.srv-card p{font-size:.81rem;color:var(--muted-l);line-height:1.72;margin-bottom:18px;}
+.srv-link{font-size:.77rem;font-weight:700;color:#111;display:inline-flex;align-items:center;gap:5px;transition:gap .2s;}
+.srv-link:hover{gap:10px;}
+
+/* ============================================================
+   REVIEWS
+============================================================ */
+.reviews{background:#fff;}
+
+.plat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px;}
+.plat-pill{
+  display:flex;align-items:center;gap:8px;
+  background:var(--cream);border:1px solid #e8e4dd;
+  border-radius:100px;padding:8px 18px;
+  font-size:.8rem;font-weight:600;color:#333;
+}
+.stars{color:#f59e0b;font-size:.85rem;letter-spacing:1px;}
+
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+.rev-card{
+  background:var(--cream);border:1px solid #e8e4dd;
+  border-radius:var(--r-l);padding:28px;
+  transition:transform .3s,box-shadow .3s;
+}
+.rev-card:hover{transform:translateY(-5px);box-shadow:0 20px 44px rgba(0,0,0,.07);}
+.rev-card .stars{display:block;margin-bottom:16px;font-size:.82rem;}
+.rev-card p{font-size:.875rem;line-height:1.78;color:#333;margin-bottom:24px;}
+.rev-author{display:flex;align-items:center;gap:12px;}
+.av{
+  width:38px;height:38px;border-radius:50%;
+  background:#111;color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;flex-shrink:0;
+}
+.av-name{font-size:.83rem;font-weight:700;color:#111;display:block;}
+.av-role{font-size:.73rem;color:var(--muted-l);}
+
+/* ============================================================
+   FEATURED SOLUTIONS
+============================================================ */
+.featured{background:var(--cream);}
+
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+.feat-card{
+  background:#fff;border:1px solid #e8e4dd;
+  border-radius:var(--r-xl);overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;
+}
+.feat-card:hover{transform:translateY(-7px);box-shadow:0 28px 56px rgba(0,0,0,.09);}
+.feat-body{padding:38px 34px;display:flex;flex-direction:column;justify-content:space-between;}
+.feat-body h3{font-size:1.12rem;font-weight:800;letter-spacing:-.4px;color:#111;margin-bottom:10px;}
+.feat-body p{font-size:.85rem;color:var(--muted-l);line-height:1.72;margin-bottom:28px;flex:1;}
+.feat-vis{display:flex;align-items:center;justify-content:center;font-size:3.2rem;min-height:190px;}
+.feat-card:nth-child(1) .feat-vis{background:linear-gradient(140deg,#0d0d0d 0%,#1a2a40 100%);}
+.feat-card:nth-child(2) .feat-vis{background:linear-gradient(140deg,#0d2a2a 0%,#0a4540 100%);}
+.feat-card:nth-child(3) .feat-vis{background:linear-gradient(140deg,#1a0a32 0%,#38092a 100%);}
+.feat-card:nth-child(4) .feat-vis{background:linear-gradient(140deg,#091a0e 0%,#0a3020 100%);}
+
+/* ============================================================
+   KNOWLEDGE HUB
+============================================================ */
+.knowledge{background:#fff;}
+
+.blog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+.blog-card{
+  border-radius:var(--r-m);overflow:hidden;
+  border:1px solid #e8e4dd;background:var(--cream);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;cursor:pointer;
+}
+.blog-card:hover{transform:translateY(-7px);box-shadow:0 22px 44px rgba(0,0,0,.08);}
+.blog-thumb{aspect-ratio:16/9;overflow:hidden;background:#ddd;}
+.blog-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.blog-card:hover .blog-thumb img{transform:scale(1.08);}
+
+.blog-body{padding:18px 20px;}
+.blog-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.blog-tag{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;background:#111;color:#fff;padding:3px 8px;border-radius:5px;}
+.blog-body h3{font-size:.84rem;font-weight:700;line-height:1.52;color:#111;margin-bottom:12px;letter-spacing:-.2px;}
+.blog-more{font-size:.74rem;font-weight:700;color:var(--muted-l);display:inline-flex;align-items:center;gap:4px;transition:color .2s;}
+.blog-card:hover .blog-more{color:#111;}
+
+/* ============================================================
+   CTA SECTION
+============================================================ */
+.cta{
+  background:var(--black);
+  padding:130px 6%;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 10%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 10%,transparent 100%);
+}
+.cta .eyebrow{color:rgba(255,255,255,.3);}
+.cta .eyebrow::before{background:rgba(255,255,255,.3);}
+.cta .sec-title{color:var(--white);}
+.cta .sec-desc{color:rgba(255,255,255,.4);margin:0 auto 48px;}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{background:#0a0a0a;padding:90px 6% 44px;border-top:1px solid var(--border);}
+
+.foot-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1.5fr;gap:3.5rem;margin-bottom:4.5rem;}
+
+.foot-logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:18px;}
+.foot-mark{width:32px;height:32px;background:var(--white);border-radius:8px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;padding:7px;}
+.foot-mark span{background:var(--black);border-radius:2px;display:block;}
+.foot-brand p{font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.75;max-width:260px;}
+
+.foot-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.45);margin-bottom:20px;}
+.foot-col ul{list-style:none;}
+.foot-col ul li{margin-bottom:.65rem;}
+.foot-col ul li a{font-size:.84rem;color:rgba(255,255,255,.32);transition:color .2s;}
+.foot-col ul li a:hover{color:var(--white);}
+.foot-col>p{font-size:.84rem;color:rgba(255,255,255,.32);line-height:1.75;margin-bottom:22px;}
+
+.foot-bottom{
+  border-top:1px solid var(--border);padding-top:28px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+  font-size:.75rem;color:rgba(255,255,255,.25);
+}
+.foot-bottom a{color:rgba(255,255,255,.25);transition:color .2s;}
+.foot-bottom a:hover{color:rgba(255,255,255,.65);}
+.foot-stars{display:flex;align-items:center;gap:6px;}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){.srv-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:1024px){
+  .proj-grid{grid-template-columns:repeat(2,1fr);}
+  .proj-card:first-child{grid-column:span 2;}
+  .srv-grid{grid-template-columns:repeat(2,1fr);}
+  .blog-grid{grid-template-columns:repeat(2,1fr);}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .nav-pill,.icon-btn{display:none;}
+  .burger{display:flex;}
+  .hero h1{letter-spacing:-3px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(3){border-left:none;}
+  .proj-grid{grid-template-columns:1fr;}
+  .proj-card:first-child{grid-column:span 1;}
+  .rev-grid,.feat-grid{grid-template-columns:1fr;}
+  .feat-card{grid-template-columns:1fr;}
+  .feat-vis{min-height:130px;}
+  .sec-hdr{flex-direction:column;align-items:flex-start;}
+  .foot-grid{grid-template-columns:1fr;}
+  .foot-bottom{flex-direction:column;text-align:center;}
+}
+@media(max-width:480px){
+  .srv-grid,.blog-grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════
-       NAVIGATION
-  ══════════════════════════════════ -->
-  <nav>
-    <!-- Logo -->
-    <a class="nav-logo" href="#">
-      <div class="nav-logo-icon">
-        <span></span><span></span><span></span><span></span>
-      </div>
-      Medito
-    </a>
+<!-- ══════════════════════════════════════════
+     NAV
+══════════════════════════════════════════ -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+    Medito
+  </a>
 
-    <!-- Pill nav links -->
-    <div class="nav-pill">
-      <a href="#home" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#portfolio">Projects</a>
-      <a href="#migration">Shopify Migration</a>
-      <a href="#reviews">Reviews</a>
-    </div>
-
-    <!-- Right side: icon buttons + contact -->
-    <div class="nav-right">
-      <!-- User icon -->
-      <div class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <!-- Lock icon -->
-      <div class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </div>
-      <a href="#contact" class="nav-cta">Contact ↗</a>
-    </div>
-
-    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" onclick="toggleMenu()">Home</a>
-    <a href="#about" onclick="toggleMenu()">About</a>
-    <a href="#services" onclick="toggleMenu()">Services</a>
-    <a href="#portfolio" onclick="toggleMenu()">Projects</a>
-    <a href="#migration" onclick="toggleMenu()">Shopify Migration</a>
-    <a href="#reviews" onclick="toggleMenu()">Reviews</a>
-    <a href="#contact" onclick="toggleMenu()">Contact ↗</a>
+  <div class="nav-pill">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Projects</a>
+    <a href="#migration">Shopify Migration</a>
+    <a href="#reviews">Reviews</a>
   </div>
 
-  <!-- ══════════════════════════════════
-       HERO — full black, centered
-  ══════════════════════════════════ -->
-  <section class="hero" id="home">
-    <!-- Badge: lock icon + text -->
+  <div class="nav-right">
+    <div class="icon-btn" title="Account">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div class="icon-btn" title="Secure">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <a href="#contact" class="cta-btn">Contact&nbsp;↗</a>
+  </div>
+
+  <button class="burger" onclick="toggleMob()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mob" id="mob">
+  <a href="#home"      onclick="toggleMob()">Home</a>
+  <a href="#about"     onclick="toggleMob()">About</a>
+  <a href="#services"  onclick="toggleMob()">Services</a>
+  <a href="#portfolio" onclick="toggleMob()">Projects</a>
+  <a href="#migration" onclick="toggleMob()">Shopify Migration</a>
+  <a href="#reviews"   onclick="toggleMob()">Reviews</a>
+  <a href="#contact"   onclick="toggleMob()">Contact ↗</a>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+    <!-- Badge: lock icon + exact text -->
     <div class="hero-badge">
-      <span class="hero-badge-icon">
+      <span class="badge-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </span>
       Shopify Agency — Since 2015
     </div>
 
-    <!-- Big headline — two lines exactly as in screenshot -->
-    <h1>We build high-performing<br />Shopify stores</h1>
+    <!-- Exact headline from screenshot -->
+    <h1>We build high-performing<br>Shopify stores</h1>
 
-    <!-- Subtitle — exact text from the website -->
+    <!-- Exact subtitle from screenshot -->
     <p class="hero-sub">
-      We are a Shopify agency specializing in bespoke theme design, development, optimization, and custom app integrations.
+      We are a Shopify agency specializing in bespoke theme<br>
+      design, development, optimization, and custom app<br>
+      integrations.
     </p>
-  </section>
+  </div>
 
-  <!-- ══════════════════════════════════
-       PORTFOLIO IMAGE STRIP (scrollable)
-  ══════════════════════════════════ -->
-  <div class="portfolio-strip">
-    <div class="strip-img">
-      <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+  <!-- Auto-scrolling project image strip -->
+  <div class="hero-strip">
+    <div class="strip-track" id="track">
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
+      <div class="strip-img"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=700&q=85&auto=format&fit=crop" alt="Project"/></div>
     </div>
-    <div class="strip-img">
-      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STATS
+══════════════════════════════════════════ -->
+<div class="stats">
+  <div class="stat"><span class="stat-n">+230</span><span class="stat-l">Deployments</span></div>
+  <div class="stat"><span class="stat-n">4</span><span class="stat-l">Continents</span></div>
+  <div class="stat"><span class="stat-n">57</span><span class="stat-l">Migrations</span></div>
+  <div class="stat"><span class="stat-n">2015</span><span class="stat-l">Founded</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PORTFOLIO
+══════════════════════════════════════════ -->
+<section class="sec portfolio" id="portfolio">
+  <div class="sec-hdr">
+    <div>
+      <span class="eyebrow">Recent Projects</span>
+      <h2 class="sec-title">Our Portfolio</h2>
+      <p class="sec-desc">Discover our recent work and see how leading brands have partnered with us to bring their vision to life.</p>
     </div>
-    <div class="strip-img">
-      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    <a href="#portfolio" class="btn-ghost">All Projects →</a>
+  </div>
+
+  <div class="proj-grid">
+    <div class="proj-card r d1">
+      <div class="proj-thumb">
+        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=1000&q=85&auto=format&fit=crop" alt="Project One" loading="lazy"/>
+      </div>
+      <div class="proj-info">
+        <div class="proj-meta"><div class="proj-tag">E-Commerce · Design</div><div class="proj-name">Project Name One</div></div>
+        <div class="proj-arr">↗</div>
+      </div>
     </div>
-    <div class="strip-img">
-      <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    <div class="proj-card r d2">
+      <div class="proj-thumb">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=85&auto=format&fit=crop" alt="Project Two" loading="lazy"/>
+      </div>
+      <div class="proj-info">
+        <div class="proj-meta"><div class="proj-tag">Development · Integration</div><div class="proj-name">Project Name Two</div></div>
+        <div class="proj-arr">↗</div>
+      </div>
     </div>
-    <div class="strip-img">
-      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80&auto=format&fit=crop" alt="Project preview" loading="lazy" />
+    <div class="proj-card r d1">
+      <div class="proj-thumb">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=85&auto=format&fit=crop" alt="Project Three" loading="lazy"/>
+      </div>
+      <div class="proj-info">
+        <div class="proj-meta"><div class="proj-tag">Branding · Web</div><div class="proj-name">Project Name Three</div></div>
+        <div class="proj-arr">↗</div>
+      </div>
+    </div>
+    <div class="proj-card r d2">
+      <div class="proj-thumb">
+        <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=700&q=85&auto=format&fit=crop" alt="Project Four" loading="lazy"/>
+      </div>
+      <div class="proj-info">
+        <div class="proj-meta"><div class="proj-tag">Migration · SEO</div><div class="proj-name">Project Name Four</div></div>
+        <div class="proj-arr">↗</div>
+      </div>
+    </div>
+    <div class="proj-card r d3">
+      <div class="proj-thumb">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=85&auto=format&fit=crop" alt="Project Five" loading="lazy"/>
+      </div>
+      <div class="proj-info">
+        <div class="proj-meta"><div class="proj-tag">Optimization · CRO</div><div class="proj-name">Project Name Five</div></div>
+        <div class="proj-arr">↗</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SERVICES
+══════════════════════════════════════════ -->
+<section class="sec services" id="services">
+  <div class="sec-hdr">
+    <div>
+      <span class="eyebrow">Transparent Pricing</span>
+      <h2 class="sec-title">Our Services</h2>
+      <p class="sec-desc">Whether you're building from scratch or refining the details, we provide customized support designed around your goals.</p>
+    </div>
+    <a href="#services" class="btn-ghost">View All →</a>
+  </div>
+
+  <div class="srv-grid">
+    <div class="srv-card r d1">
+      <div class="srv-icon">🛒</div>
+      <h3>Store Design &amp; Development</h3>
+      <p>Bespoke Shopify theme design and development built to convert — combining aesthetics with high performance.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d2">
+      <div class="srv-icon">🚀</div>
+      <h3>Conversion Rate Optimization</h3>
+      <p>Data-driven CRO strategies to turn more of your existing traffic into paying customers and increase order value.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d3">
+      <div class="srv-icon">🔄</div>
+      <h3>Platform Migration</h3>
+      <p>Seamless migration to Shopify with preserved SEO, zero data loss, and zero downtime guaranteed.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d4">
+      <div class="srv-icon">📧</div>
+      <h3>Email Marketing Automations</h3>
+      <p>High-converting automated flows and retention campaigns that drive consistent repeat revenue for your brand.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d1">
+      <div class="srv-icon">🔍</div>
+      <h3>SEO &amp; Speed Optimization</h3>
+      <p>Technical SEO and speed strategies that grow your organic visibility with blazing-fast Core Web Vitals.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d2">
+      <div class="srv-icon">🤖</div>
+      <h3>AI &amp; Search Visibility (GEO)</h3>
+      <p>We improve your brand's visibility inside ChatGPT, Gemini, and other AI-powered search engines at scale.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d3">
+      <div class="srv-icon">🔌</div>
+      <h3>API Integration</h3>
+      <p>Custom third-party API integrations that connect your store, apps, and business tools into one seamless ecosystem.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+    <div class="srv-card r d4">
+      <div class="srv-icon">🛡️</div>
+      <h3>Malware Fixing &amp; Security</h3>
+      <p>Fast, thorough malware removal and security hardening to protect your website, customer data, and brand trust.</p>
+      <a class="srv-link" href="#">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     REVIEWS
+══════════════════════════════════════════ -->
+<section class="sec reviews" id="reviews">
+  <div class="sec-hdr">
+    <div>
+      <span class="eyebrow">100% Satisfaction</span>
+      <h2 class="sec-title">Backed by a Decade<br>of Happy Brands.</h2>
+      <p class="sec-desc">Don't just take our word for it — our clients' feedback speaks volumes about our work.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       STATS
-  ══════════════════════════════════ -->
-  <div class="stats-strip">
-    <div class="stat-item"><h3>+230</h3><p>Deployments</p></div>
-    <div class="stat-item"><h3>4</h3><p>Continents</p></div>
-    <div class="stat-item"><h3>57</h3><p>Migrations</p></div>
-    <div class="stat-item"><h3>2015</h3><p>Founded</p></div>
+  <div class="plat-row">
+    <div class="plat-pill"><span class="stars">★★★★★</span> 5.0 · Google Reviews</div>
+    <div class="plat-pill"><span class="stars">★★★★★</span> 5.0 · Trustpilot</div>
+    <div class="plat-pill"><span class="stars">★★★★★</span> Verified Shopify Partner</div>
   </div>
 
-  <!-- ══════════════════════════════════
-       PORTFOLIO SECTION
-  ══════════════════════════════════ -->
-  <section class="section portfolio" id="portfolio">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">Recent Projects</span>
-        <h2 class="section-title">Our Portfolio</h2>
-        <p class="section-desc">Discover our recent work and see how leading brands have partnered with us to bring their vision to life.</p>
-      </div>
-      <a href="#portfolio" class="btn-outline">All Projects</a>
-    </div>
-    <div class="projects-grid">
-      <div class="project-card reveal">
-        <div class="project-thumb">
-          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&q=80&auto=format&fit=crop" alt="Project One" loading="lazy" />
-        </div>
-        <div class="project-info"><p class="project-tag">E-Commerce · Design</p><h3>Project Name One</h3></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&auto=format&fit=crop" alt="Project Two" loading="lazy" />
-        </div>
-        <div class="project-info"><p class="project-tag">Development · Integration</p><h3>Project Name Two</h3></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80&auto=format&fit=crop" alt="Project Three" loading="lazy" />
-        </div>
-        <div class="project-info"><p class="project-tag">Branding · Web</p><h3>Project Name Three</h3></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb">
-          <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=600&q=80&auto=format&fit=crop" alt="Project Four" loading="lazy" />
-        </div>
-        <div class="project-info"><p class="project-tag">Migration · SEO</p><h3>Project Name Four</h3></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop" alt="Project Five" loading="lazy" />
-        </div>
-        <div class="project-info"><p class="project-tag">Optimization · CRO</p><h3>Project Name Five</h3></div>
+  <div class="rev-grid">
+    <div class="rev-card r d1">
+      <span class="stars">★★★★★</span>
+      <p>"An exceptional team that truly understands digital commerce. They delivered our redesign on time and results were immediately visible in our conversion rates."</p>
+      <div class="rev-author">
+        <div class="av">JD</div>
+        <div><span class="av-name">Jane Doe</span><span class="av-role">CEO, Brand Name</span></div>
       </div>
     </div>
-  </section>
+    <div class="rev-card r d2">
+      <span class="stars">★★★★★</span>
+      <p>"The migration was completely seamless. Zero downtime, all SEO preserved, and our new Shopify store performs significantly faster than before."</p>
+      <div class="rev-author">
+        <div class="av">MS</div>
+        <div><span class="av-name">Mark Smith</span><span class="av-role">Founder, Store Name</span></div>
+      </div>
+    </div>
+    <div class="rev-card r d3">
+      <span class="stars">★★★★★</span>
+      <p>"Professional, communicative, and incredibly skilled. Our email automations now generate a significant portion of monthly revenue with zero manual effort."</p>
+      <div class="rev-author">
+        <div class="av">AL</div>
+        <div><span class="av-name">Amy Lee</span><span class="av-role">Marketing Director, Co.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- ══════════════════════════════════
-       SERVICES
-  ══════════════════════════════════ -->
-  <section class="section services" id="services">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">Transparent Pricing</span>
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-desc">Whether you're building from scratch or refining the details, we provide customized support designed around your goals.</p>
-      </div>
-      <a href="#services" class="btn-outline">View All</a>
+<!-- ══════════════════════════════════════════
+     FEATURED SOLUTIONS
+══════════════════════════════════════════ -->
+<section class="sec featured" id="about">
+  <div class="sec-hdr">
+    <div>
+      <span class="eyebrow">What We Do</span>
+      <h2 class="sec-title">Solutions We Offer</h2>
     </div>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="service-icon">🛒</div>
-        <h3>Store Design &amp; Development</h3>
-        <p>Bespoke storefront design and development built to convert — combining aesthetics with high performance.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🚀</div>
-        <h3>Conversion Rate Optimization</h3>
-        <p>Data-driven CRO strategies to turn more of your existing traffic into paying customers and increase order value.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🔄</div>
-        <h3>Platform Migration</h3>
-        <p>Seamless migration to your target platform with preserved SEO, zero data loss, and zero downtime guaranteed.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">📧</div>
-        <h3>Email Marketing Automations</h3>
-        <p>High-converting automated flows and retention campaigns that drive consistent repeat revenue for your brand.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🔍</div>
-        <h3>SEO &amp; Speed Optimization</h3>
-        <p>Technical SEO and speed strategies that grow your organic visibility and deliver blazing-fast page performance.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🤖</div>
-        <h3>AI &amp; Search Visibility (GEO)</h3>
-        <p>We improve your brand's visibility inside ChatGPT, Gemini, and other AI-powered search engines at scale.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🔌</div>
-        <h3>API Integration</h3>
-        <p>Custom third-party API integrations that connect your store, apps, and business tools into one seamless ecosystem.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-icon">🛡️</div>
-        <h3>Malware Fixing &amp; Security</h3>
-        <p>Fast, thorough malware removal and security hardening to protect your website, customer data, and brand trust.</p>
-        <a class="service-link" href="#">Learn more →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════
-       REVIEWS
-  ══════════════════════════════════ -->
-  <section class="section reviews" id="reviews">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">100% Satisfaction</span>
-        <h2 class="section-title">Backed by a Decade<br />of Happy Brands.</h2>
-        <p class="section-desc">Don't just take our word for it — our clients' feedback speaks volumes about our work.</p>
-      </div>
-    </div>
-    <div class="reviews-platforms">
-      <div class="platform-pill"><span class="stars">★★★★★</span> 5.0 · Google Reviews</div>
-      <div class="platform-pill"><span class="stars">★★★★★</span> 5.0 · Trustpilot</div>
-      <div class="platform-pill"><span class="stars">★★★★★</span> Verified Partner</div>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <span class="stars">★★★★★</span>
-        <p>"An exceptional team that truly understands digital commerce. They delivered our redesign on time and results were immediately visible in our conversion rates."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">JD</div>
-          <div class="author-info"><span>Jane Doe</span><small>CEO, Brand Name</small></div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal">
-        <span class="stars">★★★★★</span>
-        <p>"The migration was completely seamless. Zero downtime, all SEO preserved, and our new platform performs significantly faster than before."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">MS</div>
-          <div class="author-info"><span>Mark Smith</span><small>Founder, Store Name</small></div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal">
-        <span class="stars">★★★★★</span>
-        <p>"Professional, communicative, and incredibly skilled. Our email automations now generate a significant portion of monthly revenue with zero manual effort."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">AL</div>
-          <div class="author-info"><span>Amy Lee</span><small>Marketing Director, Co.</small></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════
-       FEATURED SOLUTIONS
-  ══════════════════════════════════ -->
-  <section class="section featured-services" id="about">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">What We Do</span>
-        <h2 class="section-title">Solutions We Offer</h2>
-      </div>
-    </div>
-    <div class="featured-grid">
-      <div class="featured-card reveal">
-        <div class="featured-card-content">
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card r d1">
+      <div class="feat-body">
+        <div>
           <h3>Store Design &amp; Optimization</h3>
           <p>We design, build, and optimize high-performing Shopify stores for growing brands worldwide.</p>
-          <a class="btn-primary" href="#services">Explore →</a>
         </div>
-        <div class="featured-card-image">🛍️</div>
+        <a class="btn-dark" href="#services">Explore →</a>
       </div>
-      <div class="featured-card reveal">
-        <div class="featured-card-content">
+      <div class="feat-vis">🛍️</div>
+    </div>
+    <div class="feat-card r d2">
+      <div class="feat-body">
+        <div>
           <h3>AI &amp; Search Visibility</h3>
-          <p>We improve your brand's visibility inside AI search engines and organic search results.</p>
-          <a class="btn-primary" href="#services">Explore →</a>
+          <p>We improve your brand's visibility inside AI search engines and organic search results at scale.</p>
         </div>
-        <div class="featured-card-image">🤖</div>
+        <a class="btn-dark" href="#services">Explore →</a>
       </div>
-      <div class="featured-card reveal">
-        <div class="featured-card-content">
+      <div class="feat-vis">🤖</div>
+    </div>
+    <div class="feat-card r d1">
+      <div class="feat-body">
+        <div>
           <h3>API &amp; Custom Integrations</h3>
-          <p>Seamless API integrations that connect every tool and platform in your business stack.</p>
-          <a class="btn-primary" href="#services">Explore →</a>
+          <p>Seamless API integrations that connect every tool and platform in your business stack effortlessly.</p>
         </div>
-        <div class="featured-card-image">🔌</div>
+        <a class="btn-dark" href="#services">Explore →</a>
       </div>
-      <div class="featured-card reveal">
-        <div class="featured-card-content">
+      <div class="feat-vis">🔌</div>
+    </div>
+    <div class="feat-card r d2">
+      <div class="feat-body">
+        <div>
           <h3>Security &amp; Malware Removal</h3>
-          <p>Fast malware removal and ongoing security hardening to protect your site and customer data.</p>
-          <a class="btn-primary" href="#services">Explore →</a>
+          <p>Fast malware removal and ongoing security hardening to keep your store and customer data safe.</p>
         </div>
-        <div class="featured-card-image">🛡️</div>
+        <a class="btn-dark" href="#services">Explore →</a>
+      </div>
+      <div class="feat-vis">🛡️</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     KNOWLEDGE HUB
+══════════════════════════════════════════ -->
+<section class="sec knowledge" id="migration">
+  <div class="sec-hdr">
+    <div>
+      <span class="eyebrow">Up Your Knowledge</span>
+      <h2 class="sec-title">Knowledge Hub</h2>
+      <p class="sec-desc">Selected e-commerce topics, recent Shopify updates &amp; creative ideas from our team.</p>
+    </div>
+    <a href="#" class="btn-ghost">All Articles →</a>
+  </div>
+
+  <div class="blog-grid">
+    <div class="blog-card r d1">
+      <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=85&auto=format&fit=crop" alt="AI Commerce" loading="lazy"/></div>
+      <div class="blog-body">
+        <div class="blog-tags"><span class="blog-tag">AI Commerce</span><span class="blog-tag">Strategy</span></div>
+        <h3>What Is Agentic Commerce and Why It Changes Everything</h3>
+        <a class="blog-more" href="#">Read more →</a>
       </div>
     </div>
-  </section>
-
-  <!-- ══════════════════════════════════
-       KNOWLEDGE HUB
-  ══════════════════════════════════ -->
-  <section class="section knowledge" id="migration">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">Up Your Knowledge</span>
-        <h2 class="section-title">Knowledge Hub</h2>
-        <p class="section-desc">Selected topics, recent updates &amp; creative ideas from our team.</p>
-      </div>
-      <a href="#" class="btn-outline">All Articles</a>
-    </div>
-    <div class="blog-grid">
-      <div class="blog-card reveal">
-        <div class="blog-thumb">
-          <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80&auto=format&fit=crop" alt="AI Commerce" loading="lazy" />
-        </div>
-        <div class="blog-body">
-          <div class="blog-tags"><span class="blog-tag">AI Commerce</span><span class="blog-tag">Strategy</span></div>
-          <h3>What Is Agentic Commerce and Why It Changes Everything</h3>
-          <a class="blog-read-more" href="#">Read more →</a>
-        </div>
-      </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb">
-          <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&q=80&auto=format&fit=crop" alt="SEO" loading="lazy" />
-        </div>
-        <div class="blog-body">
-          <div class="blog-tags"><span class="blog-tag">SEO</span><span class="blog-tag">AI</span></div>
-          <h3>How AI Is Reshaping Search Visibility for E-Commerce Brands</h3>
-          <a class="blog-read-more" href="#">Read more →</a>
-        </div>
-      </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb">
-          <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&q=80&auto=format&fit=crop" alt="Design" loading="lazy" />
-        </div>
-        <div class="blog-body">
-          <div class="blog-tags"><span class="blog-tag">Design</span><span class="blog-tag">UX</span></div>
-          <h3>Why Great Website Design Drives Conversions for Brands</h3>
-          <a class="blog-read-more" href="#">Read more →</a>
-        </div>
-      </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb">
-          <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80&auto=format&fit=crop" alt="Marketing" loading="lazy" />
-        </div>
-        <div class="blog-body">
-          <div class="blog-tags"><span class="blog-tag">Marketing</span><span class="blog-tag">Automation</span></div>
-          <h3>How to Automate WhatsApp Marketing for Retail Businesses</h3>
-          <a class="blog-read-more" href="#">Read more →</a>
-        </div>
+    <div class="blog-card r d2">
+      <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&q=85&auto=format&fit=crop" alt="SEO" loading="lazy"/></div>
+      <div class="blog-body">
+        <div class="blog-tags"><span class="blog-tag">SEO</span><span class="blog-tag">AI</span></div>
+        <h3>How AI Is Reshaping Search Visibility for E-Commerce Brands</h3>
+        <a class="blog-more" href="#">Read more →</a>
       </div>
     </div>
-  </section>
-
-  <!-- ══════════════════════════════════
-       CTA
-  ══════════════════════════════════ -->
-  <section class="cta-section" id="contact">
-    <span class="section-badge">Trusted Shopify Agency</span>
-    <h2 class="section-title">Let's Work Together</h2>
-    <p class="section-desc">Our mission is simple — provide the best long-term solutions for your Shopify store, backed by over a decade of expertise.</p>
-    <a href="#contact" class="btn-accent">Contact Us</a>
-  </section>
-
-  <!-- ══════════════════════════════════
-       FOOTER
-  ══════════════════════════════════ -->
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="footer-brand-name">Medito</span>
-        <p>Our mission is simple: to provide the best long-term solutions for your Shopify store, backed by over a decade of expertise.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#">Store Design &amp; Development</a></li>
-          <li><a href="#">Conversion Rate Optimization</a></li>
-          <li><a href="#">Email Marketing</a></li>
-          <li><a href="#">SEO Services</a></li>
-          <li><a href="#">Migration Service</a></li>
-          <li><a href="#">Speed Optimization</a></li>
-          <li><a href="#">API Integration</a></li>
-          <li><a href="#">Malware Fixing &amp; Security</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Information</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#">Blog / News</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Refund Policy</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get in Touch</h4>
-        <p>Whether you're migrating to Shopify or looking for ongoing support, our team is here to guide you every step of the way.</p>
-        <a href="#contact" class="btn-accent">Contact Us</a>
+    <div class="blog-card r d3">
+      <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&q=85&auto=format&fit=crop" alt="Design" loading="lazy"/></div>
+      <div class="blog-body">
+        <div class="blog-tags"><span class="blog-tag">Design</span><span class="blog-tag">UX</span></div>
+        <h3>Why Great Shopify Website Design Drives Conversions for Brands</h3>
+        <a class="blog-more" href="#">Read more →</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026, Medito. All rights reserved.</p>
-      <div style="display:flex;align-items:center;gap:0.5rem;">
-        <span class="stars" style="font-size:0.78rem;">★★★★★</span>
-        <span>Rated 5/5 by our clients</span>
+    <div class="blog-card r d4">
+      <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=85&auto=format&fit=crop" alt="Marketing" loading="lazy"/></div>
+      <div class="blog-body">
+        <div class="blog-tags"><span class="blog-tag">Marketing</span><span class="blog-tag">Automation</span></div>
+        <h3>How to Automate WhatsApp Marketing Campaigns for Retail Businesses</h3>
+        <a class="blog-more" href="#">Read more →</a>
       </div>
-      <div><a href="#">Privacy</a> · <a href="#">Terms</a></div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('mobileMenu').classList.toggle('open');
-    }
+<!-- ══════════════════════════════════════════
+     CTA
+══════════════════════════════════════════ -->
+<section class="cta" id="contact">
+  <div class="cta-grid"></div>
+  <span class="eyebrow" style="position:relative;z-index:1;justify-content:center;display:flex;">Trusted Shopify Agency</span>
+  <h2 class="sec-title" style="color:#fff;position:relative;z-index:1;margin-top:14px;">Let's Work Together</h2>
+  <p class="sec-desc" style="color:rgba(255,255,255,.4);margin:14px auto 48px;position:relative;z-index:1;">Our mission is simple — provide the best long-term solutions for your Shopify store, backed by over a decade of expertise.</p>
+  <a href="#contact" class="btn-accent" style="position:relative;z-index:1;">Contact Us ↗</a>
+</section>
 
-    document.addEventListener('click', function(e) {
-      const menu = document.getElementById('mobileMenu');
-      const btn = document.querySelector('.hamburger');
-      if (!menu.contains(e.target) && !btn.contains(e.target)) menu.classList.remove('open');
-    });
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <div class="foot-mark"><span></span><span></span><span></span><span></span></div>
+        Medito
+      </div>
+      <p>Our Shopify agency's mission is simple: to provide the best long-term solutions for your store, backed by over a decade of expertise.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Store Design &amp; Development</a></li>
+        <li><a href="#">Conversion Rate Optimization</a></li>
+        <li><a href="#">Email Marketing</a></li>
+        <li><a href="#">SEO Services</a></li>
+        <li><a href="#">Migration Service</a></li>
+        <li><a href="#">Speed Optimization</a></li>
+        <li><a href="#">API Integration</a></li>
+        <li><a href="#">Malware Fixing &amp; Security</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Information</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#">Shopify News</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Get in Touch</h4>
+      <p>Whether you're migrating to Shopify or looking for ongoing support, our team is here to guide you every step of the way.</p>
+      <a href="#contact" class="btn-accent" style="font-size:.82rem;padding:11px 24px;">Contact Us ↗</a>
+    </div>
+  </div>
 
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), 60);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
+  <div class="foot-bottom">
+    <span>© 2026, Medito Digital. All rights reserved.</span>
+    <div class="foot-stars">
+      <span class="stars">★★★★★</span>
+      <span>Rated 5/5 out of 62 votes</span>
+    </div>
+    <div><a href="#">Privacy</a>&nbsp;·&nbsp;<a href="#">Terms</a>&nbsp;·&nbsp;<a href="#">Refund</a></div>
+  </div>
+</footer>
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+<script>
+function toggleMob(){document.getElementById('mob').classList.toggle('open');}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mob'),b=document.querySelector('.burger');
+  if(!m.contains(e.target)&&!b.contains(e.target))m.classList.remove('open');
+});
 
-    // Active nav highlight
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-pill a');
+/* Scroll reveal */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+},{threshold:0.07});
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
 
-    window.addEventListener('scroll', () => {
-      let current = 'home';
-      sections.forEach(sec => {
-        if (window.scrollY >= sec.offsetTop - 130) current = sec.id;
-      });
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-      });
-    });
-  </script>
+/* Active nav */
+const secs=document.querySelectorAll('section[id]');
+const links=document.querySelectorAll('.nav-pill a');
+window.addEventListener('scroll',()=>{
+  let cur='home';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id;});
+  links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active');});
+},{passive:true});
 
+/* Pause strip on hover */
+const track=document.getElementById('track');
+if(track){
+  track.addEventListener('mouseenter',()=>track.style.animationPlayState='paused');
+  track.addEventListener('mouseleave',()=>track.style.animationPlayState='running');
+}
+</script>
 </body>
 </html>
